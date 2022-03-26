@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IBookDetails } from '../def/domain';
+import { IBookDetails, IOrderDetails } from '../def/domain';
 import { Checkbox } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -35,6 +35,7 @@ interface ITableProps {
   columns: any;
   checkboxReq?: boolean;
   sendSelectedItems?: (itemIds: string[]) => void;
+  isBookPage?: boolean;
 }
 interface ITableState {
   selectedItemIds: string[],
@@ -82,24 +83,51 @@ export default class CustomizedTables extends React.Component<ITableProps, ITabl
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.rows.map((row: IBookDetails) => (
-              <StyledTableRow key={row.bookId}>
-                {
-                  this.props.checkboxReq &&
-                  <Checkbox
-                    id={row.bookId}
-                    onChange={this.handleChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                }
-                <StyledTableCell component="th" scope="row">
-                  {row.bookId}
-                </StyledTableCell>
-                <StyledTableCell >{row.bookName}</StyledTableCell>
-                <StyledTableCell>{row.author}</StyledTableCell>
-                <StyledTableCell>{row.category}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {
+              this.props.isBookPage &&
+
+              this.props.rows.map((row: IBookDetails) => (
+                <StyledTableRow key={row.bookId}>
+                  {
+                    this.props.checkboxReq &&
+                    <Checkbox
+                      id={row.bookId}
+                      onChange={this.handleChange}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  }
+                  <StyledTableCell component="th" scope="row">
+                    {row.bookId}
+                  </StyledTableCell>
+                  <StyledTableCell >{row.bookName}</StyledTableCell>
+                  <StyledTableCell>{row.author}</StyledTableCell>
+                  <StyledTableCell>{row.category}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+
+
+            {
+              !this.props.isBookPage &&
+
+              this.props.rows.map((row: IOrderDetails) => (
+                <StyledTableRow key={row.bookId}>
+                   {
+                    this.props.checkboxReq &&
+                    <Checkbox
+                      id={row.bookId}
+                      onChange={this.handleChange}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  }
+                  <StyledTableCell component="th" scope="row">
+                    {row.bookId}
+                  </StyledTableCell>
+                  <StyledTableCell >{row.bookName}</StyledTableCell>
+                  <StyledTableCell>{row.bookAuthor}</StyledTableCell>
+                  <StyledTableCell>{row.orderdDate}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+
           </TableBody>
         </Table>
       </TableContainer>

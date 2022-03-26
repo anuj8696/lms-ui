@@ -1,33 +1,33 @@
 import React from 'react';
 import axios from 'axios';
-import { Box, Button, Grid, Link } from '@mui/material';
 import LMSTable from '../components/book-table';
-import { IBookData, IBookDetails } from '../def/domain';
+import { IBookData, IOrderDetails } from '../def/domain';
+import { Button } from '@mui/material';
 
-interface IBookProps {
+interface IReturnBooksProps {
     regNo: string;
-    pageHandler: (isSignInPage: boolean) => void;
 }
-interface IBookSate {
-    listOfBooks: IBookDetails[];
+interface IReturnBooksSate {
+    listOfBooks: IOrderDetails[];
+    returnStatus: string;
     itemsIds: string[];
-    orderedStatus: string;
 }
 
-export default class Book extends React.Component<IBookProps, IBookSate>{
-    constructor(props: IBookProps) {
+export default class ReturnBooks extends React.Component<IReturnBooksProps, IReturnBooksSate>{
+    constructor(props: IReturnBooksProps) {
         super(props);
         this.state = {
             listOfBooks: [],
+            returnStatus: '',
             itemsIds: [],
-            orderedStatus: '',
         }
+
         this.sendSelectedItems = this.sendSelectedItems.bind(this);
-        this.orderForBookIssue = this.orderForBookIssue.bind(this);
+        this.returnBooks = this.returnBooks.bind(this);
     }
 
     async componentDidMount() {
-        const url = `${'http://localhost:8080/listOfBooks'}`;
+        const url = `${'http://localhost:8080/getIssueBook/'}${this.props.regNo}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""
@@ -45,22 +45,22 @@ export default class Book extends React.Component<IBookProps, IBookSate>{
             });
     }
 
-    bookClumns() {
+    orderClumns() {
         const colm = [
             "Book ID",
             "Book Name",
-            "Author",
-            "Category"
+            "Book Author",
+            "Issued Date",
         ];
         return colm;
     }
 
     sendSelectedItems(ids: string[]) {
-        this.setState({ itemsIds: ids, orderedStatus: '' });
+        this.setState({ itemsIds: ids, returnStatus: '' });
     }
 
-    orderForBookIssue() {
-        const url = `${'http://localhost:8080/issueBoook'}`;
+    returnBooks() {
+        const url = `${'http://localhost:8080/returnBooks'}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""
@@ -73,30 +73,30 @@ export default class Book extends React.Component<IBookProps, IBookSate>{
         })
             .then((response) => {
                 if (response && response.data) {
-                    this.setState({ orderedStatus: response.data.message });
+                    this.setState({ returnStatus: response.data.message });
                 }
             })
             .catch((error) => {
-                this.setState({ orderedStatus: 'Failed to issue the selected books' });
+                this.setState({ returnStatus: 'Failed to return the selected books' });
             });
     }
 
     render(): React.ReactNode {
         return (
-            <div>
-                <h4>Here is the list of all available books in library, Please select and click Issue Books for Issueing the books</h4>
+            <>
+                <h4>You can select and click Return Books to return the issued books</h4>
                 <div style={{ overflowY: 'auto', height: '450px' }}>
                     <LMSTable
                         rows={this.state.listOfBooks}
-                        columns={this.bookClumns()}
+                        columns={this.orderClumns()}
                         checkboxReq={true}
-                        isBookPage={true}
+                        isBookPage={false}
                         sendSelectedItems={this.sendSelectedItems}
                     />
                 </div>
-                <h3 style={{ marginTop: '50px', marginLeft: '330px', color: 'green' }}>{this.state.orderedStatus}</h3>
-                <Button variant="contained" style={{ marginTop: '10px', marginLeft: '430px' }} onClick={this.orderForBookIssue}>Issue Books</Button>
-            </div>
+                <h3 style={{ marginTop: '50px', marginLeft: '330px', color: 'green' }}>{this.state.returnStatus}</h3>
+                <Button variant="contained" style={{ marginTop: '10px', marginLeft: '430px' }} onClick={this.returnBooks}>Return Books</Button>
+            </>
         );
     }
 }

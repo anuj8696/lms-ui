@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-import { Box, FormControl, FormHelperText, Grid, InputLabel, ListItem, Tab, Tabs } from '@mui/material';
+import { Box, FormControl, FormHelperText, Grid, InputLabel, Link, ListItem, Tab, Tabs } from '@mui/material';
 import SignIn from './pages/sing-in-page';
 import SignUp from './pages/sign-up-page';
 import { IUserDetails } from './def/domain';
 import axios from 'axios';
 import Book from './pages/book-page';
 import OrderDetails from './pages/order-details-page';
+import ReturnBooks from './pages/return-books';
 
 interface IAppProps {
 
@@ -19,6 +20,9 @@ interface IAppSate {
   password: string,
   loginFailedMsg: string;
   tabValue: number;
+  isBookIssuePage: boolean;
+  isOrderDetailsPage: boolean,
+  isReturnBooksPage: boolean;
 }
 
 export default class App extends React.Component<IAppProps, IAppSate>{
@@ -32,6 +36,9 @@ export default class App extends React.Component<IAppProps, IAppSate>{
       password: '',
       loginFailedMsg: '',
       tabValue: 0,
+      isBookIssuePage: true,
+      isOrderDetailsPage: false,
+      isReturnBooksPage: false,
     }
     this.pageHandler = this.pageHandler.bind(this);
     this.verifyLoginCredentials = this.verifyLoginCredentials.bind(this);
@@ -74,7 +81,7 @@ export default class App extends React.Component<IAppProps, IAppSate>{
   }
 
   handleChange(event: React.SyntheticEvent, newValue: number) {
-    this.setState({tabValue: newValue});
+    this.setState({ tabValue: newValue });
   }
 
   render(): React.ReactNode {
@@ -91,16 +98,70 @@ export default class App extends React.Component<IAppProps, IAppSate>{
         {
           this.state.isLoginVerified &&
           <Box sx={{ width: '100%' }}>
-            <Tabs value={this.state.tabValue}
-              onChange={this.handleChange}
-              centered>
-              <Tab label="Issue Books" />
-              <Tab label="Check Issued Books" />
-              { this.state.tabValue === 0 && <Book regNo={this.state.regNo} pageHandler={this.pageHandler}/> }
-              { this.state.tabValue === 1 && <OrderDetails regNo={this.state.regNo} /> }
-            </Tabs>
+            <div style={{ marginLeft: "400px", marginTop: "40px" }}>
+              <Link
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  this.setState({ isBookIssuePage: true, isOrderDetailsPage: false, isReturnBooksPage: false });
+                }}
+              >
+                {"Issue Books"}
+              </Link>
+              <Link
+                style={{ paddingLeft: "50px" }}
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  this.setState({ isBookIssuePage: false, isOrderDetailsPage: true, isReturnBooksPage: false  });
+                }}
+              >
+                {"Check Issued Books"}
+              </Link>
+              <Link
+                style={{ paddingLeft: "50px" }}
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  this.setState({ isBookIssuePage: false, isOrderDetailsPage: false, isReturnBooksPage: true });
+                }}
+              >
+                {"Return Books"}
+              </Link>
+              {
+                this.state.isLoginVerified &&
+                <Link
+                  style={{ float: "right"}}
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    this.pageHandler(true);
+                  }}
+                >
+                  {"Logout"}
+                </Link>
+              }
+            </div>
+            <Grid container spacing={2}>
+              <Grid item xs={2}>
+              </Grid>
+              <Grid item xs={12}>
+                {
+                  this.state.isBookIssuePage &&
+                  <Book regNo={this.state.regNo} pageHandler={this.pageHandler} />
+                }
+                {
+                  this.state.isOrderDetailsPage &&
+                  <OrderDetails regNo={this.state.regNo} />
+                }
+                {
+                  this.state.isReturnBooksPage &&
+                  <ReturnBooks regNo={this.state.regNo} />
+                }
+              </Grid>
+            </Grid>
           </Box>
-  }
+        }
       </>
     );
   }

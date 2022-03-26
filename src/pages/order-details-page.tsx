@@ -39,22 +39,27 @@ export default class OrderDetails extends React.Component<IOrderDetailsProps, IB
 
     orderClumns() {
         const colm = [
+            "Book ID",
             "Book Name",
+            "Book Author",
             "Issued Date",
-            "Return Date"
         ];
         return colm;
     }
 
     render(): React.ReactNode {
         return (
+            <>
+             <h4>Here is your's all issued books</h4>
             <div style={{ overflowY: 'auto', height: '450px' }}>
                 <LMSTable
                     rows={this.state.listOfBooks}
                     columns={this.orderClumns()}
                     checkboxReq={false}
+                    isBookPage={false}
                 />
             </div>
+            </>
         );
     }
 }

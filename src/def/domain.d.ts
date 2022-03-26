@@ -18,7 +18,7 @@ export interface IBookData {
 
 export interface IOrderDetails {
     bookId: string,
-    issuedDate: string,
-    regNo: string,
-    returnDate: string
+    bookName: string,
+    bookAuthor: string,
+    orderdDate: string,
 }
