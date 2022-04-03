@@ -27,7 +27,7 @@ export default class ReturnBooks extends React.Component<IReturnBooksProps, IRet
     }
 
     async componentDidMount() {
-        const url = `${'http://localhost:8080/getIssueBook/'}${this.props.regNo}`;
+        const url = `${'https://nit-jsr-lms-service.herokuapp.com/getIssueBook/'}${this.props.regNo}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""
@@ -60,7 +60,7 @@ export default class ReturnBooks extends React.Component<IReturnBooksProps, IRet
     }
 
     returnBooks() {
-        const url = `${'http://localhost:8080/returnBooks'}`;
+        const url = `${'https://nit-jsr-lms-service.herokuapp.com/returnBooks'}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""

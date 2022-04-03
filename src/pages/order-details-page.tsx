@@ -19,7 +19,7 @@ export default class OrderDetails extends React.Component<IOrderDetailsProps, IB
     }
 
     async componentDidMount() {
-        const url = `${'http://localhost:8080/getIssueBook/'}${this.props.regNo}`;
+        const url = `${'https://nit-jsr-lms-service.herokuapp.com/getIssueBook/'}${this.props.regNo}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""

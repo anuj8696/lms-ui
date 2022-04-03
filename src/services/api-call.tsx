@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 export const verifyLoginCredentials = async (userDetails: IUserDetails) => {
-    const url = `${'http://localhost:8080/resultLoggin'}${'?regNo='}${userDetails.regNo}${'&password='}${userDetails.password}`;
+    const url = `${'https://nit-jsr-lms-service.herokuapp.com/resultLoggin'}${'?regNo='}${userDetails.regNo}${'&password='}${userDetails.password}`;
     const headers = {
         "Content-Type": "application/json",
         //"authorization" ""

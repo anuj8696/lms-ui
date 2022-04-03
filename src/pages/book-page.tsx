@@ -27,7 +27,7 @@ export default class Book extends React.Component<IBookProps, IBookSate>{
     }
 
     async componentDidMount() {
-        const url = `${'http://localhost:8080/listOfBooks'}`;
+        const url = `${'https://nit-jsr-lms-service.herokuapp.com/listOfBooks'}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""
@@ -60,7 +60,7 @@ export default class Book extends React.Component<IBookProps, IBookSate>{
     }
 
     orderForBookIssue() {
-        const url = `${'http://localhost:8080/issueBoook'}`;
+        const url = `${'https://nit-jsr-lms-service.herokuapp.com/issueBoook'}`;
         const headers = {
             "Content-Type": "application/json",
             //"authorization" ""

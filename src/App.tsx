@@ -57,7 +57,7 @@ export default class App extends React.Component<IAppProps, IAppSate>{
 
   async verifyLoginCredentials(userDetails: IUserDetails) {
     this.setState({ regNo: userDetails.regNo });
-    const url = `${'http://localhost:8080/resultLoggin'}${'?regNo='}${userDetails.regNo}${'&password='}${userDetails.password}`;
+    const url = `${'https://nit-jsr-lms-service.herokuapp.com/resultLoggin'}${'?regNo='}${userDetails.regNo}${'&password='}${userDetails.password}`;
     const headers = {
       "Content-Type": "application/json",
       //"authorization" ""
